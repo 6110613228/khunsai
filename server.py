@@ -20,7 +20,7 @@ def read_root():
 @app.get("/index", response_class=HTMLResponse)
 async def read_item(request: Request):
     value = 'Value'
-    return templates.TemplateResponse("index.html", {"request": request, 'key': value})
+    return templates.TemplateResponse("index.html", {"request": request, 'key': value, 'anotherKey': 'and it\'s value'})
 
 
 @app.websocket("/websocket")
