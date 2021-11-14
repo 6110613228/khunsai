@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index page</title>
+</head>
+
+<body>
+    <h1>test</h1>
+    <p>{{ key }}</p>
+    <button onclick="capture()">Capture</button>
+    <script>
+        var websocket = new WebSocket("ws://127.0.0.1:8000/websocket")
+        var imageCapture
+
+        websocket.onopen = () => {
+            console.log('Connection opened!')
+        }
+
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        }).then((stream) => {
+            console.log('got video stream')
+            const track = stream.getVideoTracks()[0];
+            imageCapture = new ImageCapture(track);
+        })
+
+        function capture() {
+            console.log('capture')
+            imageCapture.takePhoto().then((blob) => {
+                websocket.send(blob)
+            })
+        }
+    </script>
+</body>
+
+</html>
